@@ -54,7 +54,7 @@ class Game implements Runnable {
 		bs.show();
 		g.dispose();
 	}
-
+	
 	public void run() {
 		init();
 

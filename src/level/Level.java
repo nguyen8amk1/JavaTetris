@@ -75,13 +75,12 @@ public class Level {
 	private Rectangle typeBoxRect = new Rectangle((fieldWidth - (6 + 2)) * rw, fieldOffsetY - 3 * rh, 6 * rw, 3 * rh);
 
 	// statistic parameters
-	private int ICount = 0;
-	private int JCount = 0;
-	private int LCount = 0;
-	private int OCount = 0;
-	private int SCount = 0;
-	private int TCount = 0;
-	private int ZCount = 0;
+	private int[] pieceCount= new int[7];
+
+	
+	
+	
+	private float holdTimeTilDown = 0;
 
 	public Level() {
 		// init tetrominos
@@ -106,16 +105,31 @@ public class Level {
 				field[y * fieldWidth + x] = num;
 			}
 		}
+
 		removeLines = new ArrayList<Integer>();
 		nextPiece = (new Random()).nextInt(tetrominos.length);
+		pieceCount[currentPiece]++;
 	}
 
 	public void update(float dt) {
 		handlePieceDownAction(dt);
-		removeLines();
+		removeLines(dt);
 	}
 
-	private void removeLines() {
+	private void updateScore(float dt) {
+		System.out.println(holdTimeTilDown);
+		if(holdTimeTilDown > 0.0f) {
+			System.out.println("larger than 0");
+			if(holdTimeTilDown >= 1.0f) {
+				currentScore+= 10;
+			} else{
+				currentScore+= 5;
+			}
+			holdTimeTilDown = 0;
+		} 
+	}
+
+	private void removeLines(float dt) {
 		if (!removeLines.isEmpty()) {
 			for (int lineY : removeLines)
 				for (int x = 1; x < fieldWidth - 1; x++) {
@@ -140,6 +154,10 @@ public class Level {
 				checkLines();
 
 				chooseNextPiece();
+
+				pieceCount[currentPiece]++;
+
+				updateScore(dt);
 
 				gameOver = isGameOver();
 				System.out.println(gameOver);
@@ -282,13 +300,10 @@ public class Level {
 		int numStartY = statisticBoxRect.y + (int)(fontSize*2.8);
 		g.setFont(boxFont);
 		g.setColor(Color.WHITE);
-		g.drawString("00" + ICount, numStartX, numStartY);
-		g.drawString("00" + TCount, numStartX, numStartY + gap);
-		g.drawString("00" + OCount, numStartX, numStartY + 2*gap);
-		g.drawString("00" + ZCount, numStartX, numStartY + 3*gap);
-		g.drawString("00" + SCount, numStartX, numStartY + 4*gap);
-		g.drawString("00" + LCount, numStartX, numStartY + 5*gap);
-		g.drawString("00" + JCount, numStartX, numStartY + 6*gap);
+
+		for(int i = 0; i < pieceCount.length; i++ ) {
+			g.drawString("00" + pieceCount[i], numStartX, numStartY + i*gap);
+		}
 	}
 
 	private void drawBackground(Graphics g) {
@@ -432,15 +447,20 @@ public class Level {
 			if (down < 1)
 				down += .3;
 			if ((int) down >= 1) {
-				if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + (int) down))
+				if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + (int) down)) {
 					currentY += (int) down;
+					holdTimeTilDown += .4f;
+				}
 				down = 0;
 			}
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
 
+		if(key == KeyEvent.VK_DOWN)
+			holdTimeTilDown = 0;
 	}
 
 	private int rotate(int px, int py, int r) {
@@ -513,5 +533,4 @@ public class Level {
 		}
 		return color;
 	}
-
 }
