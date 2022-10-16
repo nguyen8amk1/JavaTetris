@@ -1,3 +1,4 @@
+package game;
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -5,7 +6,7 @@ import java.awt.Dimension;
 public class Launcher {
 
 	public static void main(String[] args) {
-		Game game = new Game(800, 600, "Tetris");
+		Game game = new Game(Common.gameWidth, Common.gameHeight,  "Tetris");
 		game.start();
 	}
 }

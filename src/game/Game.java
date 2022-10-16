@@ -1,7 +1,10 @@
+package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+
+import level.Level;
 
 class Game implements Runnable {
 
@@ -14,7 +17,7 @@ class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 
-	private Level1 level1; 
+	private Level level1; 
 	
 	public Game(int width, int height, String title) {
 		this.width = width;
@@ -26,7 +29,7 @@ class Game implements Runnable {
 		display = new Display(width, height, title);
 		display.addKeyListener(new KeyInput(this));
 
-		level1 = new Level1(); 
+		level1 = new Level(); 
 	}
 
 	private void tick(float dt) {
