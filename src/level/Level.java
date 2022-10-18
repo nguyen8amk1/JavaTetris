@@ -1,16 +1,19 @@
 package level;
 
 import java.awt.Color;
+
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import game.Common;
 
-public class Level {
+public class Level extends Scene {
 	private String tetrominos[];
 
 	private int field[];
@@ -83,6 +86,8 @@ public class Level {
 	private float holdTimeTilDown = 0;
 
 	public Level() {
+		super();
+
 		// init tetrominos
 		tetrominos = new String[7];
 		tetrominos[0] = "..X...X...X...X.";
@@ -110,11 +115,70 @@ public class Level {
 		nextPiece = (new Random()).nextInt(tetrominos.length);
 		pieceCount[currentPiece]++;
 	}
+	
+	@Override
+	public void initSceneAndNextScene() {
+		scene = Scene.LEVEL0; 
+		nextScene = Scene.LEVEL0;
+	}
 
 	public void update(float dt) {
 		handlePieceDownAction(dt);
 		removeLines(dt);
 	}
+
+	public void render(Graphics g) {
+		drawBackground(g);
+		drawField(g);
+		drawCurrentPiece(g);
+		drawNextPiece(g);
+
+		// draw boxes
+		drawNextBlockBox(g);
+		drawLevelBox(g);
+		drawStatisticsBox(g);
+		drawTopAndScoreBox(g);
+		drawTypeBox(g);
+		drawLinesBox(g);
+	}
+
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+
+		if (key == KeyEvent.VK_RIGHT) {
+			if (doesPieceFit(currentPiece, currentRotation, currentX + 1, currentY)) {
+				currentX++;
+			}
+		} else if (key == KeyEvent.VK_LEFT) {
+			if (doesPieceFit(currentPiece, currentRotation, currentX - 1, currentY)) {
+				currentX--;
+			}
+		}
+
+		if (key == KeyEvent.VK_UP) {
+			if (doesPieceFit(currentPiece, currentRotation + 1, currentX, currentY)) {
+				currentRotation++;
+			}
+		} else if (key == KeyEvent.VK_DOWN) {
+			if (down < 1)
+				down += .3;
+			if ((int) down >= 1) {
+				if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + (int) down)) {
+					currentY += (int) down;
+					holdTimeTilDown += .4f;
+				}
+				down = 0;
+			}
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+
+		if(key == KeyEvent.VK_DOWN)
+			holdTimeTilDown = 0;
+	}
+
 
 	private void updateScore(float dt) {
 		System.out.println(holdTimeTilDown);
@@ -208,21 +272,6 @@ public class Level {
 				}
 			}
 		}
-	}
-
-	public void render(Graphics g) {
-		drawBackground(g);
-		drawField(g);
-		drawCurrentPiece(g);
-		drawNextPiece(g);
-
-		// draw boxes
-		drawNextBlockBox(g);
-		drawLevelBox(g);
-		drawStatisticsBox(g);
-		drawTopAndScoreBox(g);
-		drawTypeBox(g);
-		drawLinesBox(g);
 	}
 
 	private void drawLinesBox(Graphics g) {
@@ -340,7 +389,6 @@ public class Level {
 	}
 
 	private void drawNextPiece(Graphics g) {
-		// TODO: having bugs here, nextPiece not in the right spot  
 		nextPieceX = nextBlockRect.x + 25;
 		nextPieceY = nextBlockRect.y + 50;
 
@@ -426,43 +474,6 @@ public class Level {
 		}
 	}
 
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
-
-		if (key == KeyEvent.VK_RIGHT) {
-			if (doesPieceFit(currentPiece, currentRotation, currentX + 1, currentY)) {
-				currentX++;
-			}
-		} else if (key == KeyEvent.VK_LEFT) {
-			if (doesPieceFit(currentPiece, currentRotation, currentX - 1, currentY)) {
-				currentX--;
-			}
-		}
-
-		if (key == KeyEvent.VK_UP) {
-			if (doesPieceFit(currentPiece, currentRotation + 1, currentX, currentY)) {
-				currentRotation++;
-			}
-		} else if (key == KeyEvent.VK_DOWN) {
-			if (down < 1)
-				down += .3;
-			if ((int) down >= 1) {
-				if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + (int) down)) {
-					currentY += (int) down;
-					holdTimeTilDown += .4f;
-				}
-				down = 0;
-			}
-		}
-	}
-
-	public void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
-
-		if(key == KeyEvent.VK_DOWN)
-			holdTimeTilDown = 0;
-	}
-
 	private int rotate(int px, int py, int r) {
 		int pi = 0;
 		switch (r %= 4) {
@@ -533,4 +544,11 @@ public class Level {
 		}
 		return color;
 	}
+
+	@Override
+	protected void loadImage() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

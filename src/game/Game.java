@@ -3,8 +3,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
+import level.GameOptionScreen;
 import level.Level;
+import level.LevelOptionScreen;
+import level.Scene;
+import level.SplashScreen;
+import level.StartScreen;
 
 class Game implements Runnable {
 
@@ -17,23 +23,44 @@ class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 
-	private Level level1; 
+	private ArrayList<Scene> scenes;
+	private int currentScene = 0;
+
+	private Scene level1; 
+	private Scene splashScreen;
+	private Scene startScreen;
+	private Scene gameOptionScreen;
+	private Scene levelOptionScreen;
 	
 	public Game(int width, int height, String title) {
 		this.width = width;
 		this.height = height;
 		this.title = title;
 	}
-
+	
 	private void init() {
 		display = new Display(width, height, title);
 		display.addKeyListener(new KeyInput(this));
 
+		// init scenes 
+		scenes = new ArrayList<Scene>();
+
+		splashScreen = new SplashScreen();
+		startScreen = new StartScreen();
+		gameOptionScreen = new GameOptionScreen();
+		levelOptionScreen = new LevelOptionScreen();
 		level1 = new Level(); 
+
+		scenes.add(splashScreen);
+		scenes.add(startScreen);
+		scenes.add(gameOptionScreen);
+		scenes.add(levelOptionScreen);
+		scenes.add(level1);
 	}
 
 	private void tick(float dt) {
-		level1.update(dt);
+		currentScene = scenes.get(currentScene).scene();
+		scenes.get(currentScene).update(dt);
 	}
 
 	private void render() {
@@ -49,7 +76,7 @@ class Game implements Runnable {
 		g.fillRect(0, 0, width, height);
 
     //draw here
-		level1.render(g);
+		scenes.get(currentScene).render(g);
     
 		bs.show();
 		g.dispose();
@@ -96,10 +123,10 @@ class Game implements Runnable {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		level1.keyPressed(e);
+		scenes.get(currentScene).keyPressed(e);
 	}
 
 	public void keyReleased(KeyEvent e) {
-		level1.keyReleased(e);
+		scenes.get(currentScene).keyReleased(e);
 	}
 }

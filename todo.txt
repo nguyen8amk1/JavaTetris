@@ -1,1 +1,6 @@
+add all the scene for game (with assets and all that):
+	splash screen
+	main menu
+	level config menu 
 
+add music to each of the scene  
