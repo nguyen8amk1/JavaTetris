@@ -1,15 +1,14 @@
 package level;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.ArrayList;
 
-import game.Common;
+import box.BoxOption;
+import box.OptionDoublePointer;
+import box.StatusBox;
 import music.MusicPlayer;
 
 public class GameOptionScreen extends Scene {
@@ -22,56 +21,49 @@ public class GameOptionScreen extends Scene {
 
 	private int fontSize = 20;
 
-	// type parameters 
-	private String atype = "A-TYPE";
-	private Rectangle atypeRect = new Rectangle(100, 100, atype.length() * fontSize, fontSize);
-	private String btype = "B-TYPE";
-	private Rectangle btypeRect = new Rectangle(300, 100, atype.length() * fontSize, fontSize);
+	// type box 
+	private ArrayList<BoxOption> typeOptions = new ArrayList<BoxOption>();
+	private StatusBox typeBox;
 
-	// music patemeters
-	private String musicType = "MUSIC TYPE";
-	private String music1 = "MUSIC - 1";
-	private String music2 = "MUSIC - 2";
-	private String music3 = "MUSIC - 3";
-	private String musicOff = "OFF";
-
-	private Rectangle music1Rect = new Rectangle(200, 350, music1.length() * fontSize, fontSize);
-	private Rectangle music2Rect = new Rectangle(200, 400, music2.length() * fontSize, fontSize);
-	private Rectangle music3Rect = new Rectangle(200, 450, music3.length() * fontSize, fontSize);
-	private Rectangle musicOffRect = new Rectangle(200, 500, musicOff.length() * fontSize, fontSize);
-
+	// music box 
+	private ArrayList<BoxOption> musicOptions = new ArrayList<BoxOption>();
+	private StatusBox musicBox;  
+	
 	// type pointers parameters 
-	private Rectangle currentTypeRect = atypeRect;
-	private String currentTypeStr = atype;
-
-	private int triWidth = fontSize;
-	private int triHeight = fontSize;
-	private int lTriOffsetX = currentTypeRect.x - triWidth;
-	private int lTriOffsetY = currentTypeRect.y - triHeight;
-	private int rTriOffsetX = currentTypeStr.length()*fontSize;
-
-	private int[] leftTriXs = {0 + lTriOffsetX, triWidth + lTriOffsetX, 0 + lTriOffsetX};
-	private int[] leftTriYs = {0 + lTriOffsetY, triHeight/2 + lTriOffsetY, triHeight + lTriOffsetY};
-	private int[] rightTriXs = {leftTriXs[0] + rTriOffsetX, leftTriXs[1] + rTriOffsetX - 2*triWidth, leftTriXs[2] + rTriOffsetX};
-	private int[] rightTriYs = leftTriYs;
+	private Rectangle currentTypeRect;
+	private String currentTypeStr;
+	private OptionDoublePointer typePointer;
 
 	// music pointer parameters
-	private Rectangle currentMusicRect = atypeRect;
-	private String currentMusicStr = music1;
-	private int mutriWidth = fontSize;
-	private int mutriHeight = fontSize;
-	private int mulTriOffsetX = currentMusicRect.x - triWidth;
-	private int mulTriOffsetY = currentMusicRect.y - triHeight;
-	private int murTriOffsetX = currentMusicStr.length()*fontSize;
+	private Rectangle currentMusicRect;
+	private String currentMusicStr;
+	private OptionDoublePointer musicPointer; 
 
-	private int[] muleftTriXs = {0 + mulTriOffsetX, mutriWidth + mulTriOffsetX, 0 + mulTriOffsetX};
-	private int[] muleftTriYs = {0 + mulTriOffsetY, mutriHeight/2 + mulTriOffsetY, mutriHeight + mulTriOffsetY};
-	private int[] murightTriXs = {muleftTriXs[0] + murTriOffsetX, muleftTriXs[1] + murTriOffsetX - 2*mutriWidth, muleftTriXs[2] + murTriOffsetX};
-	private int[] murightTriYs = muleftTriYs;
-	
-	
 	private MusicPlayer musicPlayer = new MusicPlayer(null);
-	
+
+	public GameOptionScreen() {
+		super();
+		musicOptions.add(new BoxOption("MUSIC - 1", fontSize));
+		musicOptions.add(new BoxOption("MUSIC - 2", fontSize));
+		musicOptions.add(new BoxOption("MUSIC - 3", fontSize));
+		musicOptions.add(new BoxOption("OFF", fontSize));
+
+		typeOptions.add(new BoxOption("A-TYPE", fontSize));
+		typeOptions.add(new BoxOption("B-TYPE", fontSize));
+		
+
+		currentMusicRect = musicOptions.get(currentSong).getRect();
+		currentMusicStr = musicOptions.get(currentSong).getContent();
+		musicBox = new StatusBox(musicOptions, 200, 350);
+		musicPointer = new OptionDoublePointer(currentMusicRect.x, currentMusicRect.y, currentMusicStr.length()*fontSize, fontSize, fontSize);
+		musicBox.setGap(10);
+
+		currentTypeRect = typeOptions.get(currentType).getRect();
+		currentTypeStr = typeOptions.get(currentType).getContent();
+		typeBox = new StatusBox(typeOptions, 100, 100, StatusBox.HORIZONTAL);
+		typePointer = new OptionDoublePointer(currentTypeRect.x, currentTypeRect.y, currentTypeStr.length()*fontSize, fontSize, fontSize);
+		typeBox.setGap(50);
+	}
 
 	@Override
 	public void initSceneAndNextScene() {
@@ -81,101 +73,29 @@ public class GameOptionScreen extends Scene {
 
 	@Override
 	public void update(float dt) {
-
-		updatePointersPos();
-
-		musicPlayer.play();
-	}
-
-	private void updatePointersPos() {
-		lTriOffsetX = currentTypeRect.x - triWidth;
-		lTriOffsetY = currentTypeRect.y - triHeight;
-		rTriOffsetX = currentTypeStr.length()*fontSize;
-
-		leftTriXs = new int[] {0 + lTriOffsetX, triWidth + lTriOffsetX, 0 + lTriOffsetX};
-		leftTriYs = new int[] {0 + lTriOffsetY, triHeight/2 + lTriOffsetY, triHeight + lTriOffsetY};
-		rightTriXs = new int[] {leftTriXs[0] + rTriOffsetX, leftTriXs[1] + rTriOffsetX - 2*triWidth, leftTriXs[2] + rTriOffsetX};
-		rightTriYs = leftTriYs;
+		currentMusicRect = musicOptions.get(currentSong).getRect();
+		currentMusicStr = musicOptions.get(currentSong).getContent();
+		
+		musicPointer.setPos(currentMusicRect.x, currentMusicRect.y);
+		musicPointer.update();
 
 		
-		// music 
-		mulTriOffsetX = currentMusicRect.x - triWidth;
-		mulTriOffsetY = currentMusicRect.y - triHeight;
-		murTriOffsetX = currentMusicStr.length()*fontSize;
+		
+		currentTypeRect = typeOptions.get(currentType).getRect();
+		currentTypeStr = typeOptions.get(currentType).getContent();
 
-		muleftTriXs = new int[] {0 + mulTriOffsetX, mutriWidth + mulTriOffsetX, 0 + mulTriOffsetX};
-		muleftTriYs = new int[] {0 + mulTriOffsetY, mutriHeight/2 + mulTriOffsetY, mutriHeight + mulTriOffsetY};
-		murightTriXs = new int[] {muleftTriXs[0] + murTriOffsetX, muleftTriXs[1] + murTriOffsetX - 2*mutriWidth, muleftTriXs[2] + murTriOffsetX};
-		murightTriYs = muleftTriYs;
+		typePointer.setPos(currentTypeRect.x, currentTypeRect.y);
+		typePointer.update();
+		musicPlayer.play();
 	}
 
 	@Override
 	public void render(Graphics g) {
-		drawType(g);
-		drawMusic(g);
-	}
+		typeBox.render(g);
+		typePointer.render(g);
 
-	private void drawMusic(Graphics g) {
-		drawMusicPointer(g);
-
-		g.setFont(new Font("Serif", Font.BOLD, fontSize));
-		g.setColor(Color.WHITE);
-
-		g.drawString(music1, music1Rect.x, music1Rect.y);
-		g.drawString(music2, music2Rect.x, music2Rect.y);
-		g.drawString(music3, music3Rect.x, music3Rect.y);
-		g.drawString(musicOff, musicOffRect.x, musicOffRect.y);
-	}
-
-	private void drawType(Graphics g) {
-		drawTypePointer(g);
-
-		g.setFont(new Font("Serif", Font.BOLD, fontSize));
-		g.setColor(Color.WHITE);
-
-		g.drawString(atype, atypeRect.x, atypeRect.y);
-		g.drawString(btype, btypeRect.x, btypeRect.y);
-	}
-
-	private void drawTypePointer(Graphics g) {
-		if(currentType == 0) {
-			currentTypeRect = atypeRect;
-			currentTypeStr = atype;
-		} else {
-			currentTypeRect = btypeRect;
-			currentTypeStr = btype;
-		}
-
-		// draw double triangles 
-		g.setColor(Color.WHITE);
-		g.fillPolygon(leftTriXs, leftTriYs, 3);
-		g.fillPolygon(rightTriXs, rightTriYs, 3);
-	}
-
-	private void drawMusicPointer(Graphics g) {
-		switch(currentSong) {
-		case 0:
-			currentMusicRect = music1Rect;
-			currentMusicStr = music1;
-			break;
-		case 1:
-			currentMusicRect = music2Rect;
-			currentMusicStr = music2;
-			break;
-		case 2:
-			currentMusicRect = music3Rect;
-			currentMusicStr = music3;
-			break;
-		case 3:
-			currentMusicRect = musicOffRect;
-			currentMusicStr = musicOff;
-			break;
-		} 
-
-		// draw double triangles 
-		g.setColor(Color.WHITE);
-		g.fillPolygon(muleftTriXs, muleftTriYs, 3);
-		g.fillPolygon(murightTriXs, murightTriYs, 3);
+		musicBox.render(g);
+		musicPointer.render(g);
 	}
 
 	@Override

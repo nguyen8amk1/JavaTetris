@@ -4,3 +4,5 @@ add all the scene for game (with assets and all that):
 	level config menu 
 
 add music to each of the scene  
+
+ASAP: after done working on the game option functionality -> refactor the code

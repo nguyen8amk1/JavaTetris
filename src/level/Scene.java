@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public abstract class Scene {
-	// Scene 
+	// Scene  
 	public static int SPLASH_SCREEN = 0;
 	public static int START_SCREEN = 1;
 	public static int GAME_OPTION_SCREEN = 2;

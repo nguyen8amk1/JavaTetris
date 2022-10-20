@@ -79,9 +79,6 @@ public class Level extends Scene {
 
 	// statistic parameters
 	private int[] pieceCount= new int[7];
-
-	
-	
 	
 	private float holdTimeTilDown = 0;
 
