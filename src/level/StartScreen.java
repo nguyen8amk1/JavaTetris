@@ -21,7 +21,7 @@ public class StartScreen extends Scene {
 
 	}
 	
-	protected void loadImage() throws IOException {
+	protected void loadResources() throws IOException {
 		image = ImageIO.read(new File("./assets/images/tetris_start_screen.jpeg"));
 	}
 

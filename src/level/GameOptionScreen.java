@@ -132,7 +132,7 @@ public class GameOptionScreen extends Scene {
 	}
 
 	@Override
-	protected void loadImage() throws IOException {
+	protected void loadResources() throws IOException {
 		
 	}
 }

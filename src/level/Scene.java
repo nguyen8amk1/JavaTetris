@@ -20,7 +20,7 @@ public abstract class Scene {
 		initSceneAndNextScene();
 
 		try {
-			loadImage();
+			loadResources();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +32,7 @@ public abstract class Scene {
 	public abstract void keyPressed(KeyEvent e);
 	public abstract void keyReleased(KeyEvent e);
 
-	protected abstract void loadImage() throws IOException;
+	protected abstract void loadResources() throws IOException;
 
 	protected void toNextScene() {
 		scene = nextScene;

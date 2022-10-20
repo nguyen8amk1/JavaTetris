@@ -50,7 +50,8 @@ public class SplashScreen extends Scene {
 	}
 
 	@Override
-	protected void loadImage() throws IOException {
+	protected void loadResources() throws IOException {
 		image = ImageIO.read(new File("./assets/images/tetris_splash_screen.jpeg"));
 	}
+
 }

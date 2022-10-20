@@ -543,9 +543,8 @@ public class Level extends Scene {
 	}
 
 	@Override
-	protected void loadImage() throws IOException {
+	protected void loadResources() throws IOException {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }
