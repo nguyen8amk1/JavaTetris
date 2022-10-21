@@ -13,7 +13,7 @@ import java.util.Random;
 
 import game.Common;
 
-public class Level extends Scene {
+public class LevelScene extends Scene {
 	private String tetrominos[];
 
 	private int field[];
@@ -82,7 +82,7 @@ public class Level extends Scene {
 	
 	private float holdTimeTilDown = 0;
 
-	public Level() {
+	public LevelScene() {
 		super();
 
 		// init tetrominos

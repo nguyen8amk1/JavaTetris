@@ -5,12 +5,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import level.GameOptionScreen;
-import level.Level;
-import level.LevelOptionScreen;
+import level.GameOptionScene;
+import level.LevelScene;
+import level.LevelOptionScene;
 import level.Scene;
-import level.SplashScreen;
-import level.StartScreen;
+import level.SplashScene;
+import level.StartScene;
 
 class Game implements Runnable {
 
@@ -32,6 +32,7 @@ class Game implements Runnable {
 	private Scene gameOptionScreen;
 	private Scene levelOptionScreen;
 	
+	
 	public Game(int width, int height, String title) {
 		this.width = width;
 		this.height = height;
@@ -45,11 +46,11 @@ class Game implements Runnable {
 		// init scenes 
 		scenes = new ArrayList<Scene>();
 
-		splashScreen = new SplashScreen();
-		startScreen = new StartScreen();
-		gameOptionScreen = new GameOptionScreen();
-		levelOptionScreen = new LevelOptionScreen();
-		level1 = new Level(); 
+		splashScreen = new SplashScene();
+		startScreen = new StartScene();
+		gameOptionScreen = new GameOptionScene();
+		levelOptionScreen = new LevelOptionScene();
+		level1 = new LevelScene(); 
 
 		scenes.add(splashScreen);
 		scenes.add(startScreen);
@@ -77,7 +78,7 @@ class Game implements Runnable {
 
     //draw here
 		scenes.get(currentScene).render(g);
-    
+
 		bs.show();
 		g.dispose();
 	}

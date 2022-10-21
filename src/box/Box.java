@@ -30,7 +30,10 @@ public abstract class Box {
 	public abstract void render(Graphics g);
 
 	public Vector<Integer> getPos() { 
-		return new Vector<Integer>(rect.x, rect.y);
+		Vector<Integer> t = new Vector<Integer>();
+		t.add(rect.x);
+		t.add(rect.y);
+		return t;
 	}
 
 	public void setPos(int x, int y) {

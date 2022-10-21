@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import box.BoxOption;
 import box.OptionDoublePointer;
 import box.StatusBox;
+import game.Common;
 import music.MusicPlayer;
 
-public class GameOptionScreen extends Scene {
+public class GameOptionScene extends Scene {
 
 	public static final int MUSIC_A = 0;
 	public static final int GAME_TYPE_A = 0;
@@ -41,8 +42,9 @@ public class GameOptionScreen extends Scene {
 
 	private MusicPlayer musicPlayer = new MusicPlayer(null);
 
-	public GameOptionScreen() {
+	public GameOptionScene() {
 		super();
+		
 		musicOptions.add(new BoxOption("MUSIC - 1", fontSize));
 		musicOptions.add(new BoxOption("MUSIC - 2", fontSize));
 		musicOptions.add(new BoxOption("MUSIC - 3", fontSize));
@@ -54,15 +56,21 @@ public class GameOptionScreen extends Scene {
 
 		currentMusicRect = musicOptions.get(currentSong).getRect();
 		currentMusicStr = musicOptions.get(currentSong).getContent();
+
 		musicBox = new StatusBox(musicOptions, 200, 350);
-		musicPointer = new OptionDoublePointer(currentMusicRect.x, currentMusicRect.y, currentMusicStr.length()*fontSize, fontSize, fontSize);
 		musicBox.setGap(10);
+		musicBox.showBorder(true);
+
+		musicPointer = new OptionDoublePointer(currentMusicRect.x - fontSize, currentMusicRect.y, musicOptions.get(currentSong).getWidth(), fontSize, fontSize);
 
 		currentTypeRect = typeOptions.get(currentType).getRect();
 		currentTypeStr = typeOptions.get(currentType).getContent();
+
 		typeBox = new StatusBox(typeOptions, 100, 100, StatusBox.HORIZONTAL);
-		typePointer = new OptionDoublePointer(currentTypeRect.x, currentTypeRect.y, currentTypeStr.length()*fontSize, fontSize, fontSize);
+		typeBox.showBorder(true);
 		typeBox.setGap(50);
+		typePointer = new OptionDoublePointer(currentTypeRect.x - fontSize, currentTypeRect.y, typeOptions.get(currentSong).getWidth(), fontSize, fontSize);
+
 	}
 
 	@Override
@@ -76,7 +84,7 @@ public class GameOptionScreen extends Scene {
 		currentMusicRect = musicOptions.get(currentSong).getRect();
 		currentMusicStr = musicOptions.get(currentSong).getContent();
 		
-		musicPointer.setPos(currentMusicRect.x, currentMusicRect.y);
+		musicPointer.setPos(currentMusicRect.x - fontSize, currentMusicRect.y);
 		musicPointer.update();
 
 		
@@ -84,8 +92,9 @@ public class GameOptionScreen extends Scene {
 		currentTypeRect = typeOptions.get(currentType).getRect();
 		currentTypeStr = typeOptions.get(currentType).getContent();
 
-		typePointer.setPos(currentTypeRect.x, currentTypeRect.y);
+		typePointer.setPos(currentTypeRect.x - fontSize, currentTypeRect.y);
 		typePointer.update();
+
 		musicPlayer.play();
 	}
 
@@ -119,12 +128,8 @@ public class GameOptionScreen extends Scene {
 			break;
 		}
 
-		// clamping 
-		if(currentSong >= 3) { currentSong = 3; }
-		else if(currentSong <= 0) currentSong = 0;
-
-		if(currentType >= 1) { currentType = 1; }
-		else if(currentType <= 0) currentType = 0;
+		currentSong = Common.clamp(currentSong, 0, 3);
+		currentType = Common.clamp(currentType, 0, 1);
 	}
 
 	@Override

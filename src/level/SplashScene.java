@@ -12,12 +12,12 @@ import javax.imageio.ImageIO;
 
 import game.Common;
 
-public class SplashScreen extends Scene {
+public class SplashScene extends Scene {
 	private BufferedImage image;
 	private float splashScreenTimeAccumulator;
 	private float splashScreenDelay = 3; 
 
-	public SplashScreen() {
+	public SplashScene() {
 		super();
 	}
 
@@ -51,7 +51,7 @@ public class SplashScreen extends Scene {
 
 	@Override
 	protected void loadResources() throws IOException {
-		image = ImageIO.read(new File("./assets/images/tetris_splash_screen.jpeg"));
+		image = Common.loadImage("./assets/images/tetris_splash_screen.jpeg");
 	}
 
 }

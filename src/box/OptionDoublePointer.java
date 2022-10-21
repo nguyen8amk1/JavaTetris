@@ -23,11 +23,11 @@ public class OptionDoublePointer {
 	}
 	
 	public void update() {
-		int muOffsetX = x - pointerWidth; 
-		int muOffsetY = y - pointerHeight; 
+		int muOffsetX = x; 
+		int muOffsetY = y; 
 		leftTriXs = new int[] {0 + muOffsetX, pointerWidth + muOffsetX, 0 + muOffsetX};
 		leftTriYs = new int[] {0 + muOffsetY, pointerHeight/2 + muOffsetY, pointerHeight + muOffsetY};
-		rightTriXs = new int[] {leftTriXs[0] + gap, leftTriXs[1] + gap - 2*pointerWidth, leftTriXs[2] + gap};
+		rightTriXs = new int[] {leftTriXs[0] + gap + 2*pointerWidth, leftTriXs[1] + gap, leftTriXs[2] + gap + 2*pointerWidth};
 		rightTriYs = leftTriYs;
 	}
 

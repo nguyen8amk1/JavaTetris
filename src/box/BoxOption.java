@@ -7,9 +7,10 @@ import java.awt.Graphics;
 public class BoxOption extends Box {
 	private String content;
 	private int fontSize; 
+	private static final float fraction2getRealDim = .75f; // magic number
 
 	public BoxOption(String content, int x, int y, int fontSize) {
-		super(x, y, content.length()*fontSize, fontSize);
+		super(x, y, (int)(fraction2getRealDim*content.length()*fontSize), fontSize);
 		this.content = content;
 		this.fontSize = fontSize;
 	}
@@ -21,8 +22,7 @@ public class BoxOption extends Box {
 	public void render(Graphics g) {
 		g.setFont(new Font("Serif", Font.BOLD, fontSize));
 		g.setColor(Color.WHITE);
-
-		g.drawString(content, rect.x, rect.y);
+		g.drawString(content, rect.x, rect.y + fontSize);
 	}
 	
 

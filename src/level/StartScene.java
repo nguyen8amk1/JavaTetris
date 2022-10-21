@@ -13,16 +13,15 @@ import javax.imageio.ImageIO;
 
 import game.Common;
 
-public class StartScreen extends Scene {
+public class StartScene extends Scene {
 	private BufferedImage image; 
 
-	public StartScreen() {
+	public StartScene() {
 		super();
-
 	}
 	
 	protected void loadResources() throws IOException {
-		image = ImageIO.read(new File("./assets/images/tetris_start_screen.jpeg"));
+		image = Common.loadImage("./assets/images/tetris_start_screen.jpeg");
 	}
 
 	@Override

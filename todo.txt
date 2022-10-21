@@ -4,7 +4,11 @@ add all the scene for game (with assets and all that):
 	level config menu 
 
 add music to each of the scene  
+work on new statusbox layout (GRID, TABLE)  -> may be find a way to refactor it 
 
 ASAP: after done working on the game option functionality -> refactor the code (V kinda done refactoring)
 
-ASAP: After done with the level option screne -> refactor the level code
+ASAP: After done with the level option scene -> refactor the level code
+
+ASAPPP: the position of the status box option is wrong -> fix it some how (done)
+
