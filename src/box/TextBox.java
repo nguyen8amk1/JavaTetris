@@ -4,18 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-public class BoxOption extends Box {
+public class TextBox extends Box {
 	private String content;
 	private int fontSize; 
 	private static final float fraction2getRealDim = .75f; // magic number
 
-	public BoxOption(String content, int x, int y, int fontSize) {
+	public TextBox(String content, int x, int y, int fontSize) {
 		super(x, y, (int)(fraction2getRealDim*content.length()*fontSize), fontSize);
 		this.content = content;
 		this.fontSize = fontSize;
 	}
 
-	public BoxOption(String content, int fontSize) {
+	public TextBox(String content, int fontSize) {
 		this(content, 0, 0, fontSize);
 	}
 

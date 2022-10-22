@@ -29,4 +29,8 @@ public class Common {
 	public static int clamp(int value, int min, int max) {
 		return Math.max(min, Math.min(max, value));
 	}
+
+	public static void drawString(String content) {
+		
+	}
 }

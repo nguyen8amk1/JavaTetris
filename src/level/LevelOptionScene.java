@@ -7,28 +7,30 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import box.BoxOption;
+import box.TextBox;
 import box.StatusBox;
 import game.Common;
 
 public class LevelOptionScene extends Scene {
 
-	private ArrayList<BoxOption> levelOptions;
+	private ArrayList<TextBox> levelOptions;
 	private StatusBox levelGrid;
 	private int levelGridRow = 2;
 	private int levelGridCol = 5;
+	private TextBox levelTextBox;
 	private StatusBox scoreTable;
 	private int currentLevelIndex = 0;
 	
 	public LevelOptionScene() {
 		super();
-		levelOptions = new ArrayList<BoxOption>();
+		levelOptions = new ArrayList<TextBox>();
 		for(int i = 0; i < 10; i++) {
-			levelOptions.add(new BoxOption(Integer.toString(i), Common.fontSizeMid));
+			levelOptions.add(new TextBox(Integer.toString(i), Common.fontSizeMid));
 		}
 
-		levelGrid = new StatusBox(levelOptions, 0, 0, StatusBox.GRID, levelGridRow, levelGridCol);
+		levelGrid = new StatusBox(levelOptions, 100, 100, StatusBox.GRID, levelGridRow, levelGridCol);
 		levelGrid.showBorder(true);
+		levelTextBox = new TextBox("LEVEL", levelGrid.getX(), levelGrid.getY() - Common.fontSizeBig - 10,  Common.fontSizeBig);
 	}
 
 	@Override
@@ -45,10 +47,11 @@ public class LevelOptionScene extends Scene {
 	public void render(Graphics g) {
 		drawSelectedCell(g); 
 		levelGrid.render(g);
+		levelTextBox.render(g);
 	}
 
 	private void drawSelectedCell(Graphics g) {
-		BoxOption option = levelOptions.get(currentLevelIndex);
+		TextBox option = levelOptions.get(currentLevelIndex);
 		int x = option.getPos().get(0); 
 		int y = option.getPos().get(1); 
 		int w = option.getWidth();

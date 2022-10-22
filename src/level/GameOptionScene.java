@@ -6,9 +6,10 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import box.BoxOption;
+import box.TextBox;
 import box.OptionDoublePointer;
 import box.StatusBox;
+import box.Table;
 import game.Common;
 import music.MusicPlayer;
 
@@ -23,11 +24,11 @@ public class GameOptionScene extends Scene {
 	private int fontSize = 20;
 
 	// type box 
-	private ArrayList<BoxOption> typeOptions = new ArrayList<BoxOption>();
+	private ArrayList<TextBox> typeOptions = new ArrayList<TextBox>();
 	private StatusBox typeBox;
 
 	// music box 
-	private ArrayList<BoxOption> musicOptions = new ArrayList<BoxOption>();
+	private ArrayList<TextBox> musicOptions = new ArrayList<TextBox>();
 	private StatusBox musicBox;  
 	
 	// type pointers parameters 
@@ -40,18 +41,22 @@ public class GameOptionScene extends Scene {
 	private String currentMusicStr;
 	private OptionDoublePointer musicPointer; 
 
+
 	private MusicPlayer musicPlayer = new MusicPlayer(null);
+
+	// TEST 
+	Table table = new Table(0, 0, 4, 3, 100, 20); 
 
 	public GameOptionScene() {
 		super();
 		
-		musicOptions.add(new BoxOption("MUSIC - 1", fontSize));
-		musicOptions.add(new BoxOption("MUSIC - 2", fontSize));
-		musicOptions.add(new BoxOption("MUSIC - 3", fontSize));
-		musicOptions.add(new BoxOption("OFF", fontSize));
+		musicOptions.add(new TextBox("MUSIC-1", fontSize));
+		musicOptions.add(new TextBox("MUSIC-2", fontSize));
+		musicOptions.add(new TextBox("MUSIC-3", fontSize));
+		musicOptions.add(new TextBox("OFF", fontSize));
 
-		typeOptions.add(new BoxOption("A-TYPE", fontSize));
-		typeOptions.add(new BoxOption("B-TYPE", fontSize));
+		typeOptions.add(new TextBox("A-TYPE", fontSize));
+		typeOptions.add(new TextBox("B-TYPE", fontSize));
 		
 
 		currentMusicRect = musicOptions.get(currentSong).getRect();
@@ -71,6 +76,23 @@ public class GameOptionScene extends Scene {
 		typeBox.setGap(50);
 		typePointer = new OptionDoublePointer(currentTypeRect.x - fontSize, currentTypeRect.y, typeOptions.get(currentSong).getWidth(), fontSize, fontSize);
 
+		
+		
+		// test
+		ArrayList<TextBox> headers = new ArrayList<TextBox>();
+		headers.add(new TextBox("FUCKING", 20));
+		headers.add(new TextBox("DITME", 20));
+		headers.add(new TextBox("DITME", 20));
+
+		ArrayList<TextBox> data = new ArrayList<TextBox>();
+		data.add(new TextBox("VCL", 20));
+		data.add(new TextBox("VCL", 20));
+		data.add(new TextBox("FUCKING", 20));
+
+		table.addHeaderRow(headers);
+		table.addDataRow(data);
+		table.addDataRow(data);
+		table.addDataRow(data);
 	}
 
 	@Override
@@ -105,6 +127,8 @@ public class GameOptionScene extends Scene {
 
 		musicBox.render(g);
 		musicPointer.render(g);
+
+		table.render(g);
 	}
 
 	@Override

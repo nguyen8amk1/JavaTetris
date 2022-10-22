@@ -11,7 +11,7 @@ public class StatusBox extends Box {
 	public static final int GRID = 2; 
 	public static final int TABLE = 3; 
 
-	private ArrayList<BoxOption> options;
+	private ArrayList<TextBox> options;
 	private int direction = HORIZONTAL;
 	private int gap = 0;
 	private int x, y; 
@@ -19,7 +19,7 @@ public class StatusBox extends Box {
 	private int col;
 	private boolean showBorder = false; 
 
-	public StatusBox(ArrayList<BoxOption> options, int x, int y, int direction, int row, int col) {
+	public StatusBox(ArrayList<TextBox> options, int x, int y, int direction, int row, int col) {
 		super(x, y);
 		this.options = options;
 		this.direction = direction;
@@ -30,11 +30,11 @@ public class StatusBox extends Box {
 		initRect(x, y);
 	}
 
-	public StatusBox(ArrayList<BoxOption> options, int x, int y, int direction) {
+	public StatusBox(ArrayList<TextBox> options, int x, int y, int direction) {
 		this(options, x, y, direction, 0, 0);
 	}
 
-	public StatusBox(ArrayList<BoxOption> options, int x, int y) {
+	public StatusBox(ArrayList<TextBox> options, int x, int y) {
 		this(options, x, y, VERTICAL);
 	}
 
@@ -51,23 +51,21 @@ public class StatusBox extends Box {
 		int width = 0; 
 		int height = 0;
 		
-		// TODO: refactor this part to use dependency injection in here?? 
 		switch(direction) {
 		case VERTICAL: {
 			int ny = 0;
 			int nx = rect.x; 
 			for(int i = 0; i < options.size(); i++) {
-				BoxOption option = options.get(i);
+				TextBox option = options.get(i);
 
 				int bWidth = option.getWidth();
 				int bHeight = option.getHeight();
-
-				ny = rect.y + i*bHeight;
+				ny = rect.y + i*(bHeight + gap);
 				if(width < bWidth) {
 					width = bWidth;
 				}
 
-				height += bHeight;
+				height += bHeight + gap;
 				option.setPos(nx, ny);
 			}
 			break;
@@ -77,14 +75,14 @@ public class StatusBox extends Box {
 			int i = 0;
 			int nx = 0; 
 			int ny = rect.y;
-			for(BoxOption option: options) {
-				int fontSize = option.getFontSize();
-				nx = rect.x + i*(option.getContent().length()*fontSize + gap);
-				width += option.getContent().length()*fontSize + gap;
+			for(TextBox option: options) {
+				nx = rect.x + i*(option.getWidth() + gap);
+				width += option.getWidth() + gap;
 				height = option.getHeight();
 				option.setPos(nx, ny);
 				i++;
 			}
+			System.out.println("horizontal " + width);
 			break;
 		}
 
@@ -96,7 +94,7 @@ public class StatusBox extends Box {
 			for(int i = 0; i < row; i++) {
 				for(int j = 0; j < col; j++) {
 					int index = i*col + j; 
-					BoxOption option = options.get(index);
+					TextBox option = options.get(index);
 					nx = rect.x + j * option.getWidth();
 					ny = rect.y + i * option.getHeight();
 					option.setPos(nx, ny);
@@ -120,11 +118,11 @@ public class StatusBox extends Box {
 	}
 
 	public void render(Graphics g) {
-		for(BoxOption option : options) {
+		for(TextBox option : options) {
 			if(showBorder) {
-				Rectangle rect = option.getRect();
+				Rectangle optionRect = option.getRect();
 				g.setColor(Color.CYAN);
-				g.drawRect(rect.x, rect.y, rect.width, rect.height);
+				g.drawRect(optionRect.x, optionRect.y, optionRect.width, optionRect.height);
 			}
 			option.render(g);
 		}
@@ -132,5 +130,13 @@ public class StatusBox extends Box {
 			g.setColor(Color.GREEN);
 			g.drawRect(rect.x, rect.y, rect.width, rect.height);
 		}
+	}
+
+	public int getX() {
+		return rect.x; 
+	}
+
+	public int getY() {
+		return rect.y; 
 	}
 }
