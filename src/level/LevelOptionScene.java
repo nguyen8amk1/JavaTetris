@@ -8,18 +8,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import box.TextBox;
+import box.DataBox;
+import box.GridDataBox;
 import box.StatusBox;
+import box.TableDataBox;
 import game.Common;
 
 public class LevelOptionScene extends Scene {
 
+	private ArrayList<DataBox> dataBoxes; 
+
 	private ArrayList<TextBox> levelOptions;
-	private StatusBox levelGrid;
+	private GridDataBox levelGrid;
 	private int levelGridRow = 2;
 	private int levelGridCol = 5;
 	private TextBox levelTextBox;
-	private StatusBox scoreTable;
 	private int currentLevelIndex = 0;
+
+	
+	TableDataBox table = new TableDataBox(200, 300, 5, 3, 100, 20);
+
 	
 	public LevelOptionScene() {
 		super();
@@ -28,9 +36,36 @@ public class LevelOptionScene extends Scene {
 			levelOptions.add(new TextBox(Integer.toString(i), Common.fontSizeMid));
 		}
 
-		levelGrid = new StatusBox(levelOptions, 100, 100, StatusBox.GRID, levelGridRow, levelGridCol);
+		levelGrid = new GridDataBox(100, 100, levelGridRow, levelGridCol, levelOptions);
 		levelGrid.showBorder(true);
 		levelTextBox = new TextBox("LEVEL", levelGrid.getX(), levelGrid.getY() - Common.fontSizeBig - 10,  Common.fontSizeBig);
+	
+		// init table 
+		ArrayList<TextBox> headers = new ArrayList<TextBox>();
+		headers.add(new TextBox("", 20));
+		headers.add(new TextBox("DITME", 20));
+		headers.add(new TextBox("DITME", 20));
+
+		ArrayList<TextBox> data = new ArrayList<TextBox>();
+		data.add(new TextBox("VCL", 20));
+		data.add(new TextBox("VCL", 20));
+		data.add(new TextBox("FUCKING", 20));
+
+		ArrayList<TextBox> newdata = new ArrayList<TextBox>();
+		newdata.add(new TextBox("VAILON", 20));
+		newdata.add(new TextBox("VAILON", 20));
+		newdata.add(new TextBox("FACKINH", 20));
+
+		table.addHeaderRow(headers);
+		table.addDataRow(newdata);
+		table.addDataRow(data);
+		table.addDataRow(newdata);
+		table.addDataRow(data);
+		
+		dataBoxes = new ArrayList<DataBox>();
+		dataBoxes.add(levelGrid);
+		dataBoxes.add(table);
+		
 	}
 
 	@Override
@@ -46,7 +81,10 @@ public class LevelOptionScene extends Scene {
 	@Override
 	public void render(Graphics g) {
 		drawSelectedCell(g); 
-		levelGrid.render(g);
+
+		for(DataBox box: dataBoxes)
+			box.render(g);
+
 		levelTextBox.render(g);
 	}
 

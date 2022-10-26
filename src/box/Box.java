@@ -41,6 +41,17 @@ public abstract class Box {
 		rect.y = y;
 	}
 
+	public int getX() {
+		return rect.x; 
+	}
+
+	public int getY() {
+		return rect.y; 
+	}
+
+	public void setWidth(int width) { rect.width = width; } 
+	public void setHeight(int height) { rect.height = height; } 
+
 	public int getWidth() { return rect.width; }
 	public int getHeight() { return rect.height; }
 }

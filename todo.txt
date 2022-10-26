@@ -9,7 +9,7 @@ work on new statusbox layout (GRID, TABLE)  -> may be find a way to refactor it
 ASAP: After done with the level option scene -> refactor the level code
 ASAP: Refactor StatusBox into dependency injection for working with table 
 
-// done 
+// DONE  
 ASAPPP: the position of the status box option is wrong -> fix it some how (done)
 ASAP: after done working on the game option functionality -> refactor the code (V kinda done refactoring)
 

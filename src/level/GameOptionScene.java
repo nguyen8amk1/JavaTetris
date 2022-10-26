@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import box.TextBox;
+import box.VerticalDataBox;
+import box.DataBox;
+import box.HorizontalDataBox;
 import box.OptionDoublePointer;
-import box.StatusBox;
-import box.Table;
+import box.TableDataBox;
 import game.Common;
 import music.MusicPlayer;
 
@@ -25,11 +27,11 @@ public class GameOptionScene extends Scene {
 
 	// type box 
 	private ArrayList<TextBox> typeOptions = new ArrayList<TextBox>();
-	private StatusBox typeBox;
+	private DataBox typeBox;
 
 	// music box 
 	private ArrayList<TextBox> musicOptions = new ArrayList<TextBox>();
-	private StatusBox musicBox;  
+	private DataBox musicBox;  
 	
 	// type pointers parameters 
 	private Rectangle currentTypeRect;
@@ -44,8 +46,8 @@ public class GameOptionScene extends Scene {
 
 	private MusicPlayer musicPlayer = new MusicPlayer(null);
 
-	// TEST 
-	Table table = new Table(0, 0, 4, 3, 100, 20); 
+	private ArrayList<DataBox> dataBoxes;
+	private ArrayList<OptionDoublePointer> pointers; 
 
 	public GameOptionScene() {
 		super();
@@ -62,8 +64,8 @@ public class GameOptionScene extends Scene {
 		currentMusicRect = musicOptions.get(currentSong).getRect();
 		currentMusicStr = musicOptions.get(currentSong).getContent();
 
-		musicBox = new StatusBox(musicOptions, 200, 350);
-		musicBox.setGap(10);
+		musicBox = new VerticalDataBox(200, 350, musicOptions);
+		musicBox.setGap(20);
 		musicBox.showBorder(true);
 
 		musicPointer = new OptionDoublePointer(currentMusicRect.x - fontSize, currentMusicRect.y, musicOptions.get(currentSong).getWidth(), fontSize, fontSize);
@@ -71,28 +73,22 @@ public class GameOptionScene extends Scene {
 		currentTypeRect = typeOptions.get(currentType).getRect();
 		currentTypeStr = typeOptions.get(currentType).getContent();
 
-		typeBox = new StatusBox(typeOptions, 100, 100, StatusBox.HORIZONTAL);
+		typeBox = new HorizontalDataBox(100, 100, typeOptions);
 		typeBox.showBorder(true);
 		typeBox.setGap(50);
 		typePointer = new OptionDoublePointer(currentTypeRect.x - fontSize, currentTypeRect.y, typeOptions.get(currentSong).getWidth(), fontSize, fontSize);
 
 		
+		dataBoxes = new ArrayList<DataBox>();
+		pointers = new ArrayList<OptionDoublePointer>();
 		
-		// test
-		ArrayList<TextBox> headers = new ArrayList<TextBox>();
-		headers.add(new TextBox("FUCKING", 20));
-		headers.add(new TextBox("DITME", 20));
-		headers.add(new TextBox("DITME", 20));
+		dataBoxes.add(musicBox);
+		dataBoxes.add(typeBox);
 
-		ArrayList<TextBox> data = new ArrayList<TextBox>();
-		data.add(new TextBox("VCL", 20));
-		data.add(new TextBox("VCL", 20));
-		data.add(new TextBox("FUCKING", 20));
+		pointers.add(musicPointer);
+		pointers.add(typePointer);
 
-		table.addHeaderRow(headers);
-		table.addDataRow(data);
-		table.addDataRow(data);
-		table.addDataRow(data);
+
 	}
 
 	@Override
@@ -122,13 +118,13 @@ public class GameOptionScene extends Scene {
 
 	@Override
 	public void render(Graphics g) {
-		typeBox.render(g);
-		typePointer.render(g);
+		for(DataBox box: dataBoxes) {
+			box.render(g);
+		}
 
-		musicBox.render(g);
-		musicPointer.render(g);
-
-		table.render(g);
+		for(OptionDoublePointer pointer: pointers) {
+			pointer.render(g);
+		}
 	}
 
 	@Override
