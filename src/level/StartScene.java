@@ -16,19 +16,14 @@ import game.Common;
 public class StartScene extends Scene {
 	private BufferedImage image; 
 
-	public StartScene() {
-		super();
+	public StartScene(GameSceneManager gsm) {
+		super(gsm);
 	}
 	
 	protected void loadResources() throws IOException {
 		image = Common.loadImage("./assets/images/tetris_start_screen.jpeg");
 	}
 
-	@Override
-	public void initSceneAndNextScene() {
-		scene = Scene.START_SCREEN;
-		nextScene = Scene.GAME_OPTION_SCREEN;
-	}
 
 	@Override
 	public void update(float dt) {
@@ -51,6 +46,11 @@ public class StartScene extends Scene {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	protected void toNextScene() {
+		gsm.pushScene(new GameOptionScene(gsm));
 	}
 
 }

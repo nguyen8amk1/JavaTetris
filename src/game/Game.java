@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 import level.GameOptionScene;
+import level.GameSceneManager;
 import level.LevelScene;
 import level.LevelOptionScene;
 import level.Scene;
@@ -23,14 +24,8 @@ class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 
-	private ArrayList<Scene> scenes;
-	private int currentScene = 0;
-
-	private Scene level1; 
-	private Scene splashScreen;
-	private Scene startScreen;
-	private Scene gameOptionScreen;
-	private Scene levelOptionScreen;
+	private GameSceneManager gameSceneManager; 
+	private Scene currentScene;
 	
 	
 	public Game(int width, int height, String title) {
@@ -43,25 +38,13 @@ class Game implements Runnable {
 		display = new Display(width, height, title);
 		display.addKeyListener(new KeyInput(this));
 
-		// init scenes 
-		scenes = new ArrayList<Scene>();
-
-		splashScreen = new SplashScene();
-		startScreen = new StartScene();
-		gameOptionScreen = new GameOptionScene();
-		levelOptionScreen = new LevelOptionScene();
-		level1 = new LevelScene(); 
-
-		scenes.add(splashScreen);
-		scenes.add(startScreen);
-		scenes.add(gameOptionScreen);
-		scenes.add(levelOptionScreen);
-		scenes.add(level1);
+		gameSceneManager = new GameSceneManager();
+		gameSceneManager.pushScene(new SplashScene(gameSceneManager));
 	}
 
 	private void tick(float dt) {
-		currentScene = scenes.get(currentScene).scene();
-		scenes.get(currentScene).update(dt);
+		currentScene = gameSceneManager.getCurrentScene();
+		currentScene.update(dt);
 	}
 
 	private void render() {
@@ -77,7 +60,7 @@ class Game implements Runnable {
 		g.fillRect(0, 0, width, height);
 
     //draw here
-		scenes.get(currentScene).render(g);
+		currentScene.render(g);
 
 		bs.show();
 		g.dispose();
@@ -124,10 +107,10 @@ class Game implements Runnable {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		scenes.get(currentScene).keyPressed(e);
+		currentScene.keyPressed(e);
 	}
 
 	public void keyReleased(KeyEvent e) {
-		scenes.get(currentScene).keyReleased(e);
+		currentScene.keyReleased(e);
 	}
 }

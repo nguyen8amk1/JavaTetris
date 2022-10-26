@@ -14,10 +14,10 @@ public abstract class Scene {
 	public static int LEVEL0 = 4; 
 	public static int LEVEL1 = 5;  
 
-	protected int scene;
-	protected int nextScene;
-	public Scene() {
-		initSceneAndNextScene();
+	protected GameSceneManager gsm;
+
+	public Scene(GameSceneManager gsm) {
+		this.gsm = gsm;
 
 		try {
 			loadResources();
@@ -26,7 +26,6 @@ public abstract class Scene {
 		}
 	}
 
-	public abstract void initSceneAndNextScene();
 	public abstract void update(float dt);
 	public abstract void render(Graphics g);
 	public abstract void keyPressed(KeyEvent e);
@@ -34,9 +33,5 @@ public abstract class Scene {
 
 	protected abstract void loadResources() throws IOException;
 
-	protected void toNextScene() {
-		scene = nextScene;
-	}
-
-	public int scene() { return scene; }
+	protected abstract void toNextScene(); 
 }

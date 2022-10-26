@@ -17,8 +17,13 @@ import music.MusicPlayer;
 
 public class GameOptionScene extends Scene {
 
-	public static final int MUSIC_A = 0;
+	public static final int MUSIC_1 = 1;
+	public static final int MUSIC_2 = 2;
+	public static final int MUSIC_3 = 3;
+	public static final int MUSIC_OFF = 0;
+
 	public static final int GAME_TYPE_A = 0;
+	public static final int GAME_TYPE_B = 1; 
 	
 	private int currentSong = 0;
 	private int currentType = 0;
@@ -49,8 +54,8 @@ public class GameOptionScene extends Scene {
 	private ArrayList<DataBox> dataBoxes;
 	private ArrayList<OptionDoublePointer> pointers; 
 
-	public GameOptionScene() {
-		super();
+	public GameOptionScene(GameSceneManager gsm) {
+		super(gsm);
 		
 		musicOptions.add(new TextBox("MUSIC-1", fontSize));
 		musicOptions.add(new TextBox("MUSIC-2", fontSize));
@@ -89,12 +94,6 @@ public class GameOptionScene extends Scene {
 		pointers.add(typePointer);
 
 
-	}
-
-	@Override
-	public void initSceneAndNextScene() {
-		scene = Scene.GAME_OPTION_SCREEN;
-		nextScene = Scene.LEVEL_OPTION_SCREEN;
 	}
 
 	@Override
@@ -159,5 +158,10 @@ public class GameOptionScene extends Scene {
 	@Override
 	protected void loadResources() throws IOException {
 		
+	}
+
+	@Override
+	protected void toNextScene() {
+		gsm.pushScene(new LevelOptionScene(gsm, typeOptions.get(currentType).getContent()));
 	}
 }
