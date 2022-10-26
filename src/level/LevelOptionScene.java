@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import box.TextBox;
 import box.DataBox;
 import box.GridDataBox;
-import box.StatusBox;
 import box.TableDataBox;
 import game.Common;
 
