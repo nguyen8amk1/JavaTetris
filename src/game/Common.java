@@ -19,9 +19,6 @@ public class Common {
 	public static final int fontSizeBig = 30;
 	public static final int fontSizeMid = 25;
 
-	public static int music = GameOptionScene.MUSIC_A;	
-	public static int gameType = GameOptionScene.GAME_TYPE_A;
-
 	public static BufferedImage loadImage(String path) throws IOException {
 		return ImageIO.read(new File(path));
 	}

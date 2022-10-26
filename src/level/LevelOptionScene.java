@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import box.TextBox;
 import box.DataBox;
 import box.GridDataBox;
-import box.StatusBox;
 import box.TableDataBox;
 import game.Common;
 
@@ -23,14 +22,18 @@ public class LevelOptionScene extends Scene {
 	private int levelGridRow = 2;
 	private int levelGridCol = 5;
 	private TextBox levelTextBox;
-	private int currentLevelIndex = 0;
 
+	private TextBox typeTextBox;
+
+	private int currentLevelIndex = 0;
+	private String type, level;
 	
 	TableDataBox table = new TableDataBox(200, 300, 5, 3, 100, 20);
 
 	
-	public LevelOptionScene() {
-		super();
+	public LevelOptionScene(GameSceneManager gsm, String gameType) {
+		super(gsm);
+
 		levelOptions = new ArrayList<TextBox>();
 		for(int i = 0; i < 10; i++) {
 			levelOptions.add(new TextBox(Integer.toString(i), Common.fontSizeMid));
@@ -39,6 +42,9 @@ public class LevelOptionScene extends Scene {
 		levelGrid = new GridDataBox(100, 100, levelGridRow, levelGridCol, levelOptions);
 		levelGrid.showBorder(true);
 		levelTextBox = new TextBox("LEVEL", levelGrid.getX(), levelGrid.getY() - Common.fontSizeBig - 10,  Common.fontSizeBig);
+
+		type = gameType; 
+		typeTextBox = new TextBox(gameType, 200, 100, Common.fontSizeBig);
 	
 		// init table 
 		ArrayList<TextBox> headers = new ArrayList<TextBox>();
@@ -69,12 +75,6 @@ public class LevelOptionScene extends Scene {
 	}
 
 	@Override
-	public void initSceneAndNextScene() {
-		scene = Scene.LEVEL_OPTION_SCREEN;
-		nextScene = Scene.LEVEL0;
-	}
-
-	@Override
 	public void update(float dt) {
 	}
 
@@ -86,6 +86,8 @@ public class LevelOptionScene extends Scene {
 			box.render(g);
 
 		levelTextBox.render(g);
+		typeTextBox.render(g);
+
 	}
 
 	private void drawSelectedCell(Graphics g) {
@@ -97,7 +99,7 @@ public class LevelOptionScene extends Scene {
 		g.setColor(Color.RED);
 		g.fillRect(x, y, w, h);
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -130,7 +132,11 @@ public class LevelOptionScene extends Scene {
 	@Override
 	protected void loadResources() throws IOException {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	protected void toNextScene() {
+		gsm.pushScene(new LevelScene(gsm, type, levelOptions.get(currentLevelIndex).getContent()));
 	}
 
 }

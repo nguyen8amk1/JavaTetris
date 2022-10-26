@@ -2,7 +2,6 @@ package level;
 
 import java.awt.Color;
 
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -31,12 +30,12 @@ public class LevelScene extends Scene {
 	private boolean gameOver = false;
 	private int nextPiece;
 	private int nextPieceX, nextPieceY;
-	private int currentLevel = 1;
 	private int currentScore = 0;
 
 	private int topScore = 1000;
 	
-	private String gameType = "A-TYPE";
+	private String gameType;
+	private String level;
 	private String linesParam = "LINES-000";
 
 	// color constants
@@ -82,8 +81,8 @@ public class LevelScene extends Scene {
 	
 	private float holdTimeTilDown = 0;
 
-	public LevelScene() {
-		super();
+	public LevelScene(GameSceneManager gsm, String type, String level) {
+		super(gsm);
 
 		// init tetrominos
 		tetrominos = new String[7];
@@ -94,6 +93,9 @@ public class LevelScene extends Scene {
 		tetrominos[4] = (".X...XX...X.....");
 		tetrominos[5] = (".X...X...XX.....");
 		tetrominos[6] = ("..X...X..XX.....");
+
+		gameType = type; 
+		this.level = level;
 
 		// init field
 		field = new int[fieldWidth * fieldHeight];
@@ -111,12 +113,6 @@ public class LevelScene extends Scene {
 		removeLines = new ArrayList<Integer>();
 		nextPiece = (new Random()).nextInt(tetrominos.length);
 		pieceCount[currentPiece]++;
-	}
-	
-	@Override
-	public void initSceneAndNextScene() {
-		scene = Scene.LEVEL0; 
-		nextScene = Scene.LEVEL0;
 	}
 
 	public void update(float dt) {
@@ -370,7 +366,7 @@ public class LevelScene extends Scene {
 		g.setFont(boxFont);
 		g.setColor(Color.WHITE);
 		g.drawString("LEVEL", levelStrX, levelStrY);
-		g.drawString("00" + currentLevel, levelNumX, levelNumY);
+		g.drawString("00" + level, levelNumX, levelNumY);
 	}
 
 	private void drawNextBlockBox(Graphics g) {
@@ -545,6 +541,10 @@ public class LevelScene extends Scene {
 	@Override
 	protected void loadResources() throws IOException {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void toNextScene() {
 	}
 	
 }

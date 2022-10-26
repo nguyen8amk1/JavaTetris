@@ -6,11 +6,16 @@ add all the scene for game (with assets and all that):
 add music to each of the scene  
 work on new statusbox layout (GRID, TABLE)  -> may be find a way to refactor it 
 
+ASAP: connect the parameters optionScenes with game scene
+
 ASAP: After done with the level option scene -> refactor the level code
-ASAP: Refactor StatusBox into dependency injection for working with table 
+
+
+
 
 // DONE  
 ASAPPP: the position of the status box option is wrong -> fix it some how (done)
 ASAP: after done working on the game option functionality -> refactor the code (V kinda done refactoring)
+ASAP: Refactor StatusBox into DataBox and seperate the modes into children DataBox...
 
 

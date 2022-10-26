@@ -17,8 +17,8 @@ public class SplashScene extends Scene {
 	private float splashScreenTimeAccumulator;
 	private float splashScreenDelay = 3; 
 
-	public SplashScene() {
-		super();
+	public SplashScene(GameSceneManager gsm) {
+		super(gsm);
 	}
 
 	@Override
@@ -44,14 +44,13 @@ public class SplashScene extends Scene {
 	}
 
 	@Override
-	public void initSceneAndNextScene() {
-		scene = Scene.SPLASH_SCREEN;
-		nextScene = Scene.START_SCREEN;
+	protected void loadResources() throws IOException {
+		image = Common.loadImage("./assets/images/tetris_splash_screen.jpeg");
 	}
 
 	@Override
-	protected void loadResources() throws IOException {
-		image = Common.loadImage("./assets/images/tetris_splash_screen.jpeg");
+	protected void toNextScene() {
+		gsm.pushScene(new StartScene(gsm));
 	}
 
 }
